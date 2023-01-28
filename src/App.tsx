@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { createContext, useContext, useEffect } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+
+type DataContextType = {}; // a definir
+type DataType = [];
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const DataContext = createContext<DataContextType | null>({
+    data: null,
+    setDataContext: (data: DataType) => {},
+  });
+
+  useEffect(() => {
+    window.addEventListener("storage", onLocalStorageChange);
+
+    return () => {
+      window.addEventListener("storage", onLocalStorageChange);
+    };
+  }, []);
+
+  const onLocalStorageChange = (e: Event): void => {
+    const { setDataContext } = useContext(DataContext);
+    setDataContext(e?.target.value);
+  };
+
+  /* onst handleLocalStorage = () => {
+    window.localStorage.setItem("isThisInLocalStorage", "true");
+    window.dispatchEvent(new Event("storage"));
+  }; */
+
+  return <DataContext.Provider value={}></DataContext.Provider>;
 }
 
 export default App;
