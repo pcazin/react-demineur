@@ -1,35 +1,46 @@
-import React, { createContext, useContext, useEffect } from "react";
-import logo from "./logo.svg";
+import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
+import Demineur from "./components/demineur/Demineur";
+import { GameResultType } from "./shared/types";
+import { DataContextType } from "./shared/interfaces";
 import "./App.css";
 
-type DataContextType = {}; // a definir
-type DataType = [];
-
 function App() {
-  const DataContext = createContext<DataContextType | null>({
-    data: null,
-    setDataContext: (data: DataType) => {},
+
+  const DataContext = createContext<DataContextType>({
+    addGameResult: (newResult: GameResultType) => {},
+    gameResults: []
   });
+  const [gameResults, setGameResultsValue] = useState<GameResultType[]>([]);
+  const localStorageGameResultsKey = "game-results";
 
   useEffect(() => {
-    window.addEventListener("storage", onLocalStorageChange);
-
-    return () => {
-      window.addEventListener("storage", onLocalStorageChange);
-    };
+    AppLoadStorage();
   }, []);
 
-  const onLocalStorageChange = (e: Event): void => {
-    const { setDataContext } = useContext(DataContext);
-    setDataContext(e?.target.value);
+  useEffect(() => {
+    localStorage.setItem(localStorageGameResultsKey, JSON.stringify(gameResults));
+  }, [gameResults]);
+
+  const AppLoadStorage = (): void => {
+    const newValue = localStorage.getItem("game-results")
+    if (newValue) {
+      setGameResultsValue(JSON.parse(newValue));
+    } else {
+      localStorage.setItem("game-results", JSON.stringify([]));
+    }
   };
 
-  /* onst handleLocalStorage = () => {
-    window.localStorage.setItem("isThisInLocalStorage", "true");
-    window.dispatchEvent(new Event("storage"));
-  }; */
+  const addGameResult = (newResult: GameResultType): void => {
+    setGameResultsValue(gameResultsValue => [...gameResultsValue, newResult]);
+    localStorage.setItem("game-results", JSON.stringify(gameResults));
+  }
 
-  return <DataContext.Provider value={}></DataContext.Provider>;
+  return (
+    <DataContext.Provider value={{ gameResults, addGameResult }}>
+      <Demineur />
+    </DataContext.Provider>
+  )
+
 }
 
 export default App;
