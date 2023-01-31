@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
-import Demineur from "./components/demineur/Demineur";
+import React, { createContext, useEffect, useState } from "react";
+import Demineur from "./components/game-container/GameContainer";
 import { GameResultType } from "./shared/types";
 import { DataContextType } from "./shared/interfaces";
 import "./App.css";
+import GameContainer from "./components/game-container/GameContainer";
 
 function App() {
 
@@ -37,7 +38,7 @@ function App() {
 
   return (
     <DataContext.Provider value={{ gameResults, addGameResult }}>
-      <Demineur />
+      <GameContainer />
     </DataContext.Provider>
   )
 
