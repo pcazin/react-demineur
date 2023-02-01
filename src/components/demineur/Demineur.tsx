@@ -49,7 +49,7 @@ export default function Demineur({ modeSpec, startTime, stopTime, setTimeRunning
       for(let j = 0; j < arrayOfArrays[i].length; j++) {
         if(bombsIndexs.includes(index)) {
           arrayOfArrays[i][j] = 1;
-        } 
+        }
         index++;
       }
     }
@@ -70,6 +70,7 @@ export default function Demineur({ modeSpec, startTime, stopTime, setTimeRunning
   const calculateNumbers = (preArray: ZeroOneArrayOfArrays): PreCell[][] => {
 
     let finalArray: BeforeJsxArrayOfArrays = []
+
     let nullCell = 0;
     let bombCell = 0;
     let numberCell = 0;
@@ -88,7 +89,7 @@ export default function Demineur({ modeSpec, startTime, stopTime, setTimeRunning
         }
 
         if(cell === 0) {
-          
+
           let numberOfBoundsAround = getNumberOfBombsAround(preArray, i, j);
           if (numberOfBoundsAround === 0) {
             beforeJsxArray.push(null);
@@ -102,23 +103,12 @@ export default function Demineur({ modeSpec, startTime, stopTime, setTimeRunning
       finalArray.push(beforeJsxArray);
     }
 
-    /* console.log("number: " + numberCell);
-    console.log("null: " + nullCell);
-    console.log("bomb: " + bombCell); */
-    
     return finalArray;
   }
-
 
   const getNumberOfBombsAround = (array: ZeroOneArrayOfArrays, i: number, j: number): number => {
 
     let total = 0;
-
-    console.log("i: " + i)
-    console.log("j: " + j)
-    console.log("array: " + array[0]);
-    
-
 
     let cells = [
       array[i - 1] && array[i - 1][j - 1] !== undefined ? array[i - 1][j - 1] : undefined,
@@ -132,7 +122,7 @@ export default function Demineur({ modeSpec, startTime, stopTime, setTimeRunning
     ]
 
     for(let index of cells) {
-      if( index !== undefined) {
+      if( index !== undefined && index === 1) {
         total = total + 1
       }
     }
@@ -141,12 +131,10 @@ export default function Demineur({ modeSpec, startTime, stopTime, setTimeRunning
   }
 
   return (
-      <p>coucou</p>
-
+      <>
+        <p>coucou</p>
+      </>
   )
 }
-
-
-
 
 
