@@ -14,10 +14,6 @@ export type ModeSpec = {
   bombs: number
 }
 
-export type Cell = {
-  state: CellState
-}
-
 export type DemineurProps = {
   modeSpec: ModeSpec,
   startTime: () => void,

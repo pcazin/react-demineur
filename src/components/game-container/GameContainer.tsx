@@ -47,7 +47,7 @@ export default function GameContainer() {
         return {
           text: "Expert",
           size: 22,
-          bombs: 100
+          bombs: 100,
         };
       case Mode.MASTER:
         return {

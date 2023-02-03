@@ -1,37 +1,19 @@
 export enum Mode {
   BEGINNER,
-  INTERMEDIATE, 
+  INTERMEDIATE,
   EXPERT,
   MASTER
 };
 
 export enum CellState {
-  HIDE,
-  HIDE_HOVER,
-  HIDE_FLAG,
-  HIDE_INTERROGATION,
-
-  HIDE_EMPTY,
-  HIDE_BOMB,
-  HIDE_CLICKED_BOMB,
-  HIDE_ONE,
-  HIDE_TWO,
-  HIDE_THREE,
-  HIDE_FOUR,
-  HIDE_FIVE,
-  HIDE_SIX,
-  HIDE_SEVEN,
-  HIDE_EIGHT,
-
-  REVEALED_EMPTY,
-  REVEALED_BOMB,
-  REVEALED_CLICKED_BOMB,
-  REVEALED_ONE,
-  REVEALED_TWO,
-  REVEALED_THREE,
-  REVEALED_FOUR,
-  REVEALED_FIVE,
-  REVEALED_SIX,
-  REVEALED_SEVEN,
-  REVEALED_EIGHT
+  EMPTY = "empty",
+  BOMB = "bomb",
+  ONE = "one",
+  TWO = "two",
+  THREE = "three",
+  FOUR = "four",
+  FIVE = "five",
+  SIX = "six",
+  SEVEN = "seven",
+  EIGHT = "eight",
 }
