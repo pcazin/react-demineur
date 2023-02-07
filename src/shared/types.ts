@@ -11,7 +11,8 @@ export type GameResultType = {
 export type ModeSpec = {
   text: string,
   size: number,
-  bombs: number
+  bombs: number,
+  containerSize: number
 }
 
 export type DemineurProps = {

@@ -4,6 +4,15 @@ import { CellState } from "../../shared/enums";
 import { useEffect, useState } from "react";
 import { Cell } from "../cell/Cell";
 
+/**
+ * Pour savoir si la partie est finit
+ * je fais un array du nombre total de cell
+ * le nombre total de cell a découvrir = nb total - nb de bombe
+ * si le nombre de cell revealed = ce nombre
+ * la partie est finit
+ * la partie est donc perdue
+ */
+
 type ZeroOneArrayOfArrays = Array<Array<0 | 1>>;
 type BeforeJsxArrayOfArrays = Array<Array<PreCell>>;
 type PreNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -17,7 +26,19 @@ export default function Demineur({
   stopTime,
   setTimeRunning,
 }: DemineurProps) {
+
   const [revealAll, setRevealAll] = useState(0);
+  const [revealEmptyCellAround, setRevealEmptyCellAround] = useState<{ x: number, y: number }>({ x: -1, y: -1 });
+  const [demineur, setDemineur] = useState<React.ReactElement[]>([]);
+
+  useEffect(() => {
+    const demineur = generateDemineur();
+    setDemineur(demineur);
+  }, []);
+
+  useEffect(() => {
+    console.log(revealEmptyCellAround)
+  }, [revealEmptyCellAround])
 
   const generateDemineur = () => {
     // je genre des tableaux de empty
@@ -78,10 +99,6 @@ export default function Demineur({
   const calculateNumbers = (preArray: ZeroOneArrayOfArrays): PreCell[][] => {
     let finalArray: BeforeJsxArrayOfArrays = [];
 
-    let nullCell = 0;
-    let bombCell = 0;
-    let numberCell = 0;
-
     for (let i = 0; i < preArray.length; i++) {
       let beforeJsxArray: PreCell[] = [];
 
@@ -90,23 +107,19 @@ export default function Demineur({
 
         if (cell === 1) {
           beforeJsxArray.push("bomb");
-          bombCell++;
         }
 
         if (cell === 0) {
-          let numberOfBoundsAround = getNumberOfBombsAround(preArray, i, j);
+          const numberOfBoundsAround = getNumberOfBombsAround(preArray, i, j);
           if (numberOfBoundsAround === 0) {
             beforeJsxArray.push(null);
-            nullCell++;
           } else {
             beforeJsxArray.push(numberOfBoundsAround as PreNumber);
-            numberCell++;
           }
         }
       }
       finalArray.push(beforeJsxArray);
     }
-
     return finalArray;
   };
 
@@ -154,132 +167,44 @@ export default function Demineur({
   ): ReturnType<typeof Cell>[] => {
     let JsxCells: JSX.Element[] = [];
 
-    let index = 0;
+    const numbersState = [CellState.ONE, CellState.TWO, CellState.THREE, CellState.FOUR, CellState.FIVE, CellState.SIX, CellState.SEVEN, CellState.EIGHT];
+
+    let x = 0;
     for (let array of arrayOfArrays) {
+      let y = 0;
       for (let cell of array) {
+        let cellState: CellState;
         switch (cell) {
           case null:
-            JsxCells.push(
-              <Cell
-                id={index}
-                type="null"
-                setRevealAll={setRevealAll}
-                modeSpec={modeSpec}
-                cellState={CellState.EMPTY}
-              />
-            );
+            cellState = CellState.EMPTY;
             break;
           case "bomb":
-            JsxCells.push(
-              <Cell
-                id={index}
-                type="bomb"
-                setRevealAll={setRevealAll}
-                modeSpec={modeSpec}
-                cellState={CellState.BOMB}
-              />
-            );
+            cellState = CellState.BOMB;
             break;
           default:
-            switch (cell) {
-              case 1:
-                JsxCells.push(
-                  <Cell
-                    id={index}
-                    type="number"
-                    setRevealAll={setRevealAll}
-                    modeSpec={modeSpec}
-                    cellState={CellState.ONE}
-                  />
-                );
-                break;
-              case 2:
-                JsxCells.push(
-                  <Cell
-                    id={index}
-                    type="number"
-                    setRevealAll={setRevealAll}
-                    modeSpec={modeSpec}
-                    cellState={CellState.TWO}
-                  />
-                );
-                break;
-              case 3:
-                JsxCells.push(
-                  <Cell
-                    id={index}
-                    type="number"
-                    setRevealAll={setRevealAll}
-                    modeSpec={modeSpec}
-                    cellState={CellState.THREE}
-                  />
-                );
-                break;
-              case 4:
-                JsxCells.push(
-                  <Cell
-                    id={index}
-                    type="number"
-                    setRevealAll={setRevealAll}
-                    modeSpec={modeSpec}
-                    cellState={CellState.FOUR}
-                  />
-                );
-                break;
-              case 5:
-                JsxCells.push(
-                  <Cell
-                    id={index}
-                    type="number"
-                    setRevealAll={setRevealAll}
-                    modeSpec={modeSpec}
-                    cellState={CellState.FIVE}
-                  />
-                );
-                break;
-              case 6:
-                JsxCells.push(
-                  <Cell
-                    id={index}
-                    type="number"
-                    setRevealAll={setRevealAll}
-                    modeSpec={modeSpec}
-                    cellState={CellState.SIX}
-                  />
-                );
-                break;
-              case 7:
-                JsxCells.push(
-                  <Cell
-                    id={index}
-                    type="number"
-                    setRevealAll={setRevealAll}
-                    modeSpec={modeSpec}
-                    cellState={CellState.SEVEN}
-                  />
-                );
-                break;
-              case 8:
-                JsxCells.push(
-                  <Cell
-                    id={index}
-                    type="number"
-                    setRevealAll={setRevealAll}
-                    modeSpec={modeSpec}
-                    cellState={CellState.EIGHT}
-                  />
-                );
-                break;
-              default:
-                break;
-            }
+            cellState = numbersState[cell - 1];
+            break;
         }
-      }
-      index++;
-    }
 
+        JsxCells.push(<Cell
+          id={x.toString() + y.toString()}
+          setRevealAll={setRevealAll}
+          modeSpec={modeSpec}
+          cellState={cellState}
+          axes={{ x: x, y: y }}
+          setRevealEmptyCellAround={setRevealEmptyCellAround}
+          revealEmptyCellAround={revealEmptyCellAround}
+        />)
+        y++;
+      }
+      x++;
+    }
     return JsxCells;
   };
 
-  return <>{generateDemineur()}</>;
+  return (
+    <div style={{ display: 'inline-grid', gridTemplateColumns: `repeat(${modeSpec.size}, 1fr)`, userSelect: "none" }}>
+      {demineur}
+    </div>
+  )
 }

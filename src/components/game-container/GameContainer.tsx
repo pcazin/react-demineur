@@ -6,6 +6,7 @@ import Demineur from "../demineur/Demineur";
 
 export default function GameContainer() {
 
+  const containerSize = 700;
   const [isTimeRunning, setTimeRunning] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
   const [gameMode, setGameMode] = useState<Mode>(Mode.BEGINNER);
@@ -35,25 +36,29 @@ export default function GameContainer() {
         return {
           text: "Débutant",
           size: 9,
-          bombs: 10
+          bombs: 10,
+          containerSize: containerSize
         };
       case Mode.INTERMEDIATE:
         return {
           text: "Intermédiaire",
           size: 16,
-          bombs: 40
+          bombs: 40,
+          containerSize: containerSize
         };
       case Mode.EXPERT:
         return {
           text: "Expert",
           size: 22,
           bombs: 100,
+          containerSize: containerSize
         };
       case Mode.MASTER:
         return {
           text: "Maître",
           size: 30,
-          bombs: 250
+          bombs: 250,
+          containerSize: containerSize
         };
     }
   }
