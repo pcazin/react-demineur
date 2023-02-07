@@ -33,7 +33,7 @@ export function Cell({ id, modeSpec, setRevealAll, cellState, axes, setRevealEmp
   const [isRevealed, setIsRevealed] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("yeseuh")
+    console.log("working")
   }, [revealEmptyCellAround])
 
   const revealAll = () => {
@@ -138,6 +138,5 @@ export function Cell({ id, modeSpec, setRevealAll, cellState, axes, setRevealEmp
     />
   )
 }
-
 
 

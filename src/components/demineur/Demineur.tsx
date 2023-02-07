@@ -36,10 +36,6 @@ export default function Demineur({
     setDemineur(demineur);
   }, []);
 
-  useEffect(() => {
-    console.log(revealEmptyCellAround)
-  }, [revealEmptyCellAround])
-
   const generateDemineur = () => {
     // je genre des tableaux de empty
     const ZeroOneArrayOfArrays: ZeroOneArrayOfArrays =
