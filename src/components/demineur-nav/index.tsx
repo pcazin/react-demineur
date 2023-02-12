@@ -1,6 +1,6 @@
 import { useState, Dispatch } from "react";
 import { Mode } from "../../shared/enums";
-import "./demineurNav.css";
+import "./style.css";
 
 export default function DemineurNav({ setMode }: { setMode: Dispatch<React.SetStateAction<Mode>> }) {
 

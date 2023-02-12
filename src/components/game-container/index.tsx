@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Mode } from "../../shared/enums";
 import { ModeSpec } from "../../shared/types";
-import DemineurNav from "../demineur-nav/DemineurNav";
-import Demineur from "../demineur/Demineur";
+import DemineurNav from "../demineur-nav";
+import Demineur from "../demineur";
+import CellsGenerator from "../cellsGenerator";
 
 export default function GameContainer() {
 
@@ -10,6 +11,8 @@ export default function GameContainer() {
   const [isTimeRunning, setTimeRunning] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
   const [gameMode, setGameMode] = useState<Mode>(Mode.BEGINNER);
+  const [revealAll, setRevealAll] = useState(0);
+  const [revealEmptyCellAround, setRevealEmptyCellAround] = useState<{ x: number, y: number }>({ x: -1, y: -1 });
 
   const startTime = (): void => {
     setTimeRunning(current => !current);
@@ -66,7 +69,19 @@ export default function GameContainer() {
   return (
     <div id="game-container">
       <DemineurNav setMode={setGameMode} />
-      <Demineur modeSpec={getModeSpec(gameMode)} startTime={startTime} stopTime={stopTime} isTimeRunning={isTimeRunning} setTimeRunning={setTimeRunning} />
+      <Demineur   
+        startTime={startTime} 
+        stopTime={stopTime} 
+        isTimeRunning={isTimeRunning} 
+        setTimeRunning={setTimeRunning} 
+        cellsArray={
+          <CellsGenerator modeSpec={getModeSpec(gameMode)} 
+            revealAll={revealAll} 
+            setRevealAll={setRevealAll} 
+            revealEmptyCellAround={revealEmptyCellAround} 
+            setRevealEmptyCellAround={setRevealEmptyCellAround} 
+          />} 
+      />
     </div>
   )
 }

@@ -14,20 +14,19 @@ import Eight from "../../assets/cell/eight.png";
 import Interrogation from "../../assets/cell/interrogation.png";
 import Flag from "../../assets/cell/flag.png";
 import { ModeSpec } from "../../shared/types";
-import { log } from "console";
-
 
 interface ICell {
   id: string, // key
   modeSpec: ModeSpec, // gameMod 
   setRevealAll: Dispatch<React.SetStateAction<number>>, // revealAll the grid if bomb is pressed or game end
+  revealAll: {x: number, y: number},
   cellState: CellState, // enum status of the grid
   axes: { x: number, y: number }, // position on the grid, used to determine if i have to show the cell for expend empty
   setRevealEmptyCellAround: Dispatch<React.SetStateAction<{ x: number, y: number }>>, // trigger to show empty cell arround
   revealEmptyCellAround: { x: number, y: number } // axes positions, used to revealed empty cells around
 }
 
-export function Cell({ id, modeSpec, setRevealAll, cellState, axes, setRevealEmptyCellAround, revealEmptyCellAround }: ICell) {
+export function Cell({ id, modeSpec, setRevealAll, revealAll, cellState, axes, setRevealEmptyCellAround, revealEmptyCellAround }: ICell) {
 
   const [image, setImage] = useState<string>(Default);
   const [isRevealed, setIsRevealed] = useState<boolean>(false);
@@ -36,7 +35,7 @@ export function Cell({ id, modeSpec, setRevealAll, cellState, axes, setRevealEmp
     console.log("working")
   }, [revealEmptyCellAround])
 
-  const revealAll = () => {
+  const revealAllFunction = () => {
     setRevealAll(val => val + 1);
   }
 

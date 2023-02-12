@@ -1,9 +1,9 @@
 import React, { createContext, useEffect, useState } from "react";
-import Demineur from "./components/game-container/GameContainer";
+import Demineur from "./components/game-container";
 import { GameResultType } from "./shared/types";
 import { DataContextType } from "./shared/interfaces";
 import "./App.css";
-import GameContainer from "./components/game-container/GameContainer";
+import GameContainer from "./components/game-container";
 
 function App() {
 

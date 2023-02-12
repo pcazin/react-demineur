@@ -17,6 +17,7 @@ export type ModeSpec = {
 
 export type DemineurProps = {
   modeSpec: ModeSpec,
+  cellsArray: JSX.Element[],
   startTime: () => void,
   stopTime: () => void,
   isTimeRunning: boolean,

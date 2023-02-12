@@ -1,40 +1,23 @@
-import "./demineur.css";
-import { DemineurProps } from "../../shared/types";
-import { CellState } from "../../shared/enums";
-import { useEffect, useState } from "react";
-import { Cell } from "../cell/Cell";
-
-/**
- * Pour savoir si la partie est finit
- * je fais un array du nombre total de cell
- * le nombre total de cell a découvrir = nb total - nb de bombe
- * si le nombre de cell revealed = ce nombre
- * la partie est finit
- * la partie est donc perdue
- */
-
 type ZeroOneArrayOfArrays = Array<Array<0 | 1>>;
 type BeforeJsxArrayOfArrays = Array<Array<PreCell>>;
 type PreNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type PreEmpty = null;
 type PreBomb = "bomb";
 type PreCell = PreEmpty | PreBomb | PreNumber;
+import { ModeSpec } from "../../shared/types";
+import { CellState } from "../../shared/enums";
+import { Cell } from "../cell";
+import { Dispatch, ReactElement } from "react";
 
-export default function Demineur({
-  modeSpec,
-  startTime,
-  stopTime,
-  setTimeRunning,
-}: DemineurProps) {
+interface Props {
+  modeSpec: ModeSpec,
+  revealAll: number,
+  setRevealAll: Dispatch<React.SetStateAction<number>>,
+  revealEmptyCellAround: { x: number, y: number },
+  setRevealEmptyCellAround: Dispatch<React.SetStateAction<{ x: number, y: number }>>
+}
 
-  const [revealAll, setRevealAll] = useState(0);
-  const [revealEmptyCellAround, setRevealEmptyCellAround] = useState<{ x: number, y: number }>({ x: -1, y: -1 });
-  const [demineur, setDemineur] = useState<React.ReactElement[]>([]);
-
-  useEffect(() => {
-    const demineur = generateDemineur();
-    setDemineur(demineur);
-  }, []);
+export default function CellsGenerator({modeSpec, revealAll, setRevealAll, revealEmptyCellAround, setRevealEmptyCellAround}: Props): JSX.Element[] {
 
   const generateDemineur = () => {
     // je genre des tableaux de empty
@@ -185,6 +168,7 @@ export default function Demineur({
         JsxCells.push(<Cell
           id={x.toString() + y.toString()}
           setRevealAll={setRevealAll}
+          revealAll={revealAll}
           modeSpec={modeSpec}
           cellState={cellState}
           axes={{ x: x, y: y }}
@@ -198,9 +182,5 @@ export default function Demineur({
     return JsxCells;
   };
 
-  return (
-    <div style={{ display: 'inline-grid', gridTemplateColumns: `repeat(${modeSpec.size}, 1fr)`, userSelect: "none" }}>
-      {demineur}
-    </div>
-  )
+  return generateDemineur();
 }
